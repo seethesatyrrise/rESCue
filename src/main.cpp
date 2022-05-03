@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <Logger.h>
 #include "config.h"
-#include "BatteryMonitor.h"
-#include "Buzzer.h"
+// #include "BatteryMonitor.h"
+// #include "Buzzer.h"
 ////#include "SoundController.h"
 #include "ILedController.h"
 #include "Ws28xxController.h"
@@ -28,9 +28,9 @@ ILedController *ledController;
 
 #if defined(CANBUS_ENABLED)
  CanBus * canbus = new CanBus();
- BatteryMonitor *batMonitor = new BatteryMonitor(&canbus->vescData);
+ //BatteryMonitor *batMonitor = new BatteryMonitor(&canbus->vescData);
 #else
- BatteryMonitor *batMonitor = new BatteryMonitor();
+ //BatteryMonitor *batMonitor = new BatteryMonitor();
 #endif //CANBUS_ENABLED
 
 BleServer *bleServer = new BleServer();
@@ -88,7 +88,7 @@ void setup() {
 #endif //CANBUS_ENABLED
 
   // initializes the battery monitor
-  batMonitor->init();
+  // batMonitor->init();
   // initialize the UART bridge from VESC to BLE and the BLE support for Blynk (https://blynk.io)
 #ifdef CANBUS_ONLY
   bleServer->init(canbus->stream, canbus);
@@ -98,7 +98,7 @@ void setup() {
   // initialize the LED (either COB or Neopixel)
   ledController->init();
 
-  Buzzer::getInstance()->startSequence();
+  // Buzzer::getInstance()->startSequence();
   ledController->startSequence();
 
   char buf[128];
@@ -158,7 +158,7 @@ void loop() {
   ledController->loop(&new_forward, &new_backward, &idle);
 
   // measure and check voltage
-  batMonitor->checkValues();
+  // batMonitor->checkValues();
 
   // call the VESC UART-to-Bluetooth bridge
 #ifdef CANBUS_ENABLED
